@@ -16,10 +16,10 @@ export function Hero() {
         className="object-cover object-[55%_50%]"
       />
 
-      <h1 className="cover-words absolute inset-x-(--margin) top-[calc(var(--header)+var(--gutter))] flex flex-col font-display text-cover lg:inset-0 lg:block">
-        <span className="self-start lg:absolute lg:top-[16%] lg:left-[5%]">Elopements</span>
-        <span className="self-end lg:absolute lg:top-[40%] lg:right-[10%]">&amp; weddings</span>
-        <span className="self-end lg:absolute lg:right-(--margin) lg:bottom-(--margin)">in Copenhagen</span>
+      <h1 className="cover-words absolute inset-x-(--margin) top-[calc(var(--header)+var(--gutter))] flex flex-col font-display text-cover lg:bottom-(--margin) lg:justify-between">
+        <span className="self-start lg:ml-[4%]">Elopements</span>
+        <span className="self-end lg:mr-[8%]">&amp; weddings</span>
+        <span className="self-end">in Copenhagen</span>
       </h1>
 
       <a href={inquiryHref} className="button-paper absolute bottom-(--margin) left-(--margin)">
