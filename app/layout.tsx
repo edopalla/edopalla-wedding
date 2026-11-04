@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Gilda_Display, Schibsted_Grotesk } from "next/font/google";
 import { SiteHeader } from "@/components/site-header";
-import { SmoothScroll } from "@/components/smooth-scroll";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -41,7 +40,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${display.variable} ${text.variable} antialiased`}>
       <body>
-        <SmoothScroll />
         <SiteHeader />
         {children}
       </body>

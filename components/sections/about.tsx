@@ -4,15 +4,15 @@ import { PhotoFrame } from "../photo-frame";
 
 export function About() {
   return (
-    <section id="about" aria-labelledby="about-title" className="page-grid items-end gap-y-(--heading-gap) py-(--section)">
+    <section id="about" aria-labelledby="about-title" className="page-grid items-center gap-y-(--heading-gap) py-(--section)">
       <PhotoFrame
         photo={photos.robertElenaForeheads}
         shape="portrait"
-        sizes="(min-width: 768px) 42vw, 100vw"
-        className="col-span-12 md:col-span-5"
+        sizes="(min-width: 768px) 50vw, 100vw"
+        className="col-span-12 md:col-span-6"
       />
 
-      <div className="col-span-12 flex flex-col gap-(--heading-gap) md:col-span-6 md:col-start-7">
+      <div className="col-span-12 flex flex-col gap-(--heading-gap) md:col-span-5 md:col-start-8">
         <h2 id="about-title" className="font-display text-display-sm">
           {site.photographer}
         </h2>

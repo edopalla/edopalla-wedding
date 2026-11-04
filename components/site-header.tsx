@@ -6,34 +6,30 @@ import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { useMountEffect } from "@/hooks/useMountEffect";
 import { inquiryHref, navHref, navigation, site, type NavItem } from "@/lib/site";
-import { pauseScroll, resumeScroll } from "@/lib/scroll";
-
-const revealThreshold = 160;
 
 function isOverCover(headerHeight: number) {
   const cover = document.querySelector("[data-cover]");
   return Boolean(cover && cover.getBoundingClientRect().bottom > headerHeight);
 }
 
-function useScrollState(onHome: boolean) {
-  const [hidden, setHidden] = useState(false);
+function useOverCover(onHome: boolean) {
   const [overCover, setOverCover] = useState(onHome);
 
   useMountEffect(() => {
-    let lastY = window.scrollY;
     const onScroll = () => {
-      const y = window.scrollY;
       const header = document.querySelector("header");
-      setHidden(y > revealThreshold && y > lastY);
       setOverCover(isOverCover(header?.offsetHeight ?? 0));
-      lastY = y;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   });
 
-  return { hidden, overCover };
+  return overCover;
+}
+
+function lockPageScroll(locked: boolean) {
+  document.documentElement.style.overflow = locked ? "hidden" : "";
 }
 
 function NavLinks({ items, onHome }: { items: NavItem[]; onHome: boolean }) {
@@ -53,33 +49,20 @@ function NavLinks({ items, onHome }: { items: NavItem[]; onHome: boolean }) {
 export function SiteHeader() {
   const onHome = usePathname() === "/";
   const [menuOpen, setMenuOpen] = useState(false);
-  const [panelShown, setPanelShown] = useState(false);
-  const scroll = useScrollState(onHome);
-  const hidden = scroll.hidden && !panelShown;
-  const onCover = scroll.overCover && !panelShown;
+  const onCover = useOverCover(onHome) && !menuOpen;
 
   const menuButton = useRef<HTMLButtonElement>(null);
   const menuPanel = useRef<HTMLDivElement>(null);
 
   const openMenu = () => {
-    flushSync(() => {
-      setMenuOpen(true);
-      setPanelShown(true);
-    });
-    pauseScroll();
+    flushSync(() => setMenuOpen(true));
+    lockPageScroll(true);
     menuPanel.current?.querySelector("a")?.focus();
   };
 
   const closeMenu = () => {
     setMenuOpen(false);
-    resumeScroll();
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPanelShown(false);
-  };
-
-  const settlePanel = (event: React.TransitionEvent<HTMLDivElement>) => {
-    if (event.target === event.currentTarget && event.propertyName === "clip-path" && !menuOpen) {
-      setPanelShown(false);
-    }
+    lockPageScroll(false);
   };
 
   const closeOnEscape = (event: React.KeyboardEvent) => {
@@ -91,10 +74,8 @@ export function SiteHeader() {
   return (
     <header
       onKeyDown={closeOnEscape}
-      data-hidden={hidden}
       data-on-cover={onCover}
-      data-menu={panelShown ? "open" : "closed"}
-      className="site-header fixed inset-x-0 top-0 z-40 bg-paper text-ink data-[hidden=true]:-translate-y-full data-[on-cover=true]:bg-transparent data-[on-cover=true]:text-paper"
+      className="site-header fixed inset-x-0 top-0 z-40 bg-paper text-ink data-[on-cover=true]:bg-transparent data-[on-cover=true]:text-paper"
     >
       <div className="flex h-(--header) items-center justify-between px-(--margin)">
         <Link
@@ -126,18 +107,16 @@ export function SiteHeader() {
         type="button"
         tabIndex={-1}
         aria-hidden
-        data-open={menuOpen}
+        hidden={!menuOpen}
         onClick={closeMenu}
-        className="menu-backdrop fixed inset-x-0 top-(--header) bottom-0 cursor-default md:hidden"
+        className="fixed inset-x-0 top-(--header) bottom-0 cursor-default md:hidden"
       />
 
       <div
         id="site-menu"
         ref={menuPanel}
-        data-open={menuOpen}
-        inert={!menuOpen}
-        onTransitionEnd={settlePanel}
-        className="menu-panel absolute inset-x-0 top-full max-h-[calc(100svh-var(--header))] overflow-y-auto overscroll-contain bg-paper px-(--margin) pb-(--margin) text-ink md:hidden"
+        hidden={!menuOpen}
+        className="absolute inset-x-0 top-full max-h-[calc(100svh-var(--header))] overflow-y-auto overscroll-contain bg-paper px-(--margin) pb-(--margin) text-ink md:hidden"
       >
         <nav aria-label="Mobile">
           <ul className="flex flex-col">

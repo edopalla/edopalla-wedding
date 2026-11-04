@@ -1,4 +1,3 @@
-import { Reveal } from "@/components/reveal";
 import { About } from "@/components/sections/about";
 import { Contact } from "@/components/sections/contact";
 import { Hero } from "@/components/sections/hero";
@@ -7,14 +6,12 @@ import { Portfolio } from "@/components/sections/portfolio";
 
 export default function Home() {
   return (
-    <Reveal>
-      <main>
-        <Hero />
-        <Portfolio />
-        <Packages />
-        <About />
-        <Contact />
-      </main>
-    </Reveal>
+    <main>
+      <Hero />
+      <Portfolio />
+      <Packages />
+      <About />
+      <Contact />
+    </main>
   );
 }

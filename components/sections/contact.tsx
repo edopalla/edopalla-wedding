@@ -1,58 +1,16 @@
-import Image from "next/image";
-import { photos, type Photo } from "@/content/photos";
 import { inquiryHref, navHref, navigation, site } from "@/lib/site";
 
 const [emailUser, emailDomain] = site.email.split("@");
-
-const strip: Photo[] = [
-  photos.kieranHelleSunflowers,
-  photos.robertElenaHandsHair,
-  photos.nataliiaEnricoSquare,
-  photos.kieranHelleBouquet,
-  photos.robertElenaCurls,
-  photos.nataliiaEnricoKiss,
-  photos.kieranHelleTable,
-  photos.robertElenaForeheads,
-  photos.nataliiaEnricoWalk,
-  photos.kieranHellePortrait,
-];
-
-function StripPhotos({ hidden }: { hidden?: boolean }) {
-  return (
-    <ul aria-hidden={hidden || undefined} className="flex shrink-0 gap-(--gutter) pr-(--gutter)">
-      {strip.map((photo) => (
-        <li
-          key={photo.image.src}
-          className="relative h-(--strip-height) shrink-0 overflow-hidden"
-          style={{ aspectRatio: photo.image.width / photo.image.height }}
-        >
-          <Image
-            src={photo.image}
-            alt={hidden ? "" : photo.alt}
-            fill
-            sizes="30vw"
-            className="object-cover"
-          />
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 export function Contact() {
   return (
     <section
       id="contact"
       aria-labelledby="contact-title"
-      className="overflow-hidden bg-ink pt-(--section) pb-(--margin) text-paper"
+      className="bg-ink pt-(--section) pb-(--margin) text-paper"
     >
-      <div className="photo-strip flex w-max">
-        <StripPhotos />
-        <StripPhotos hidden />
-      </div>
-
-      <div className="page-grid mt-(--section) items-end gap-y-8">
-        <h2 id="contact-title" className="col-span-12 font-display text-display-xl md:col-span-7">
+      <div className="page-grid items-end gap-y-8">
+        <h2 id="contact-title" className="col-span-12 font-display text-display-lg md:col-span-7">
           Let&rsquo;s talk
         </h2>
         <div className="col-span-12 flex flex-col items-start gap-5 md:col-span-5 md:items-end">
