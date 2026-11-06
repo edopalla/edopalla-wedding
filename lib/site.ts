@@ -20,7 +20,7 @@ export const inquiryHref = `mailto:${site.email}?subject=${encodeURIComponent(
 export type NavItem = { label: string; section?: string; href?: string };
 
 export const navigation: NavItem[] = [
-  { label: "Portfolio", section: "portfolio" },
+  { label: "Portfolio", href: "/portfolio" },
   { label: "Packages", section: "packages" },
   { label: "Blog", href: "#" },
   { label: "About", section: "about" },

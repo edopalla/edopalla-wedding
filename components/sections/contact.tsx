@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { inquiryHref, navHref, navigation, site } from "@/lib/site";
 
 const [emailUser, emailDomain] = site.email.split("@");
@@ -29,9 +30,9 @@ export function Contact() {
           <ul className="flex flex-wrap gap-x-8 gap-y-2">
             {navigation.map((item) => (
               <li key={item.label}>
-                <a href={navHref(item, true)} className="link-underline">
+                <Link href={navHref(item, false)} className="link-underline">
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

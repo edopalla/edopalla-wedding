@@ -1,32 +1,22 @@
-import Image from "next/image";
-import type { CSSProperties } from "react";
-import type { Photo } from "@/content/photos";
-import { coupleName, stories, type Story } from "@/content/stories";
+import Link from "next/link";
+import { coupleName, stories, storyHref, type Story } from "@/content/stories";
+import { PhotoRow } from "../photo-row";
 import { SectionHeading } from "../section-heading";
 
-function aspect(photo: Photo) {
-  return photo.image.width / photo.image.height;
-}
-
 function Couple({ story, index }: { story: Story; index: number }) {
-  const pair = index % 2 === 0 ? [story.main, story.detail] : [story.detail, story.main];
-  const rowAspect = aspect(story.main) + aspect(story.detail);
+  const [first, second] = story.photos;
+  const pair = index % 2 === 0 ? [first, second] : [second, first];
 
   return (
     <article className="flex w-full flex-col gap-4">
-      <div className="flex flex-col gap-(--gutter) md:flex-row">
-        {pair.map((photo) => (
-          <Image
-            key={photo.image.src}
-            src={photo.image}
-            alt={photo.alt}
-            sizes={`(min-width: 768px) ${Math.round((aspect(photo) / rowAspect) * 100)}vw, 100vw`}
-            style={{ "--ratio": aspect(photo) } as CSSProperties}
-            className="h-auto w-full min-w-0 md:[flex:var(--ratio)_1_0%]"
-          />
-        ))}
-      </div>
-      <h3 className="font-display text-display-sm">{coupleName(story)}</h3>
+      <Link href={storyHref(story)} tabIndex={-1} aria-hidden>
+        <PhotoRow photos={pair} />
+      </Link>
+      <h3 className="font-display text-display-sm">
+        <Link href={storyHref(story)} className="link-underline">
+          {coupleName(story)}
+        </Link>
+      </h3>
     </article>
   );
 }
@@ -39,9 +29,9 @@ export function Portfolio() {
         {stories.map((story, index) => (
           <Couple key={story.id} story={story} index={index} />
         ))}
-        <a href="/portfolio" className="link-underline font-display text-display-sm">
+        <Link href="/portfolio" className="link-underline font-display text-display-sm">
           View the portfolio
-        </a>
+        </Link>
       </div>
     </section>
   );

@@ -37,9 +37,9 @@ function NavLinks({ items, onHome }: { items: NavItem[]; onHome: boolean }) {
     <ul className="flex gap-9 text-small">
       {items.map((item) => (
         <li key={item.label}>
-          <a href={navHref(item, onHome)} className="link-underline">
+          <Link href={navHref(item, onHome)} className="link-underline">
             {item.label}
-          </a>
+          </Link>
         </li>
       ))}
     </ul>
@@ -122,9 +122,9 @@ export function SiteHeader() {
           <ul className="flex flex-col">
             {navigation.map((item) => (
               <li key={item.label}>
-                <a href={navHref(item, onHome)} onClick={closeMenu} className="block py-3">
+                <Link href={navHref(item, onHome)} onClick={closeMenu} className="block py-3">
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
