@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { photos } from "@/content/photos";
 import { site } from "@/lib/site";
 import { PhotoFrame } from "../photo-frame";
@@ -30,6 +31,9 @@ export function About() {
             same attention and the same care.
           </p>
         </div>
+        <Link href="/about" className="link-underline self-start font-display text-display-sm">
+          More about me
+        </Link>
       </div>
     </section>
   );

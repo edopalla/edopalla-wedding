@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import { photos } from "@/content/photos";
-import { inquiryHref } from "@/lib/site";
+import { inquiryPath } from "@/lib/site";
 
 export function Hero() {
   const cover = photos.kieranHelleSunflowers;
@@ -22,9 +23,9 @@ export function Hero() {
           <br />
           in Copenhagen
         </h1>
-        <a href={inquiryHref} className="button-paper">
+        <Link href={inquiryPath} className="button-paper">
           Check your date
-        </a>
+        </Link>
       </div>
     </section>
   );

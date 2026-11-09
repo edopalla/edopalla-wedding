@@ -87,6 +87,10 @@ html:has(dialog[open]) {
   }
 }
 
+.link-underline[aria-current="page"] {
+  background-size: 100% 1px;
+}
+
 .button-ink,
 .button-paper {
   display: inline-flex;

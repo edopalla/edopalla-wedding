@@ -1,9 +1,15 @@
 import type { ReactNode } from "react";
 
-export function SectionHeading({ id, children }: { id: string; children: ReactNode }) {
+type SectionHeadingProps = {
+  id: string;
+  as?: "h1" | "h2";
+  children: ReactNode;
+};
+
+export function SectionHeading({ id, as: Tag = "h2", children }: SectionHeadingProps) {
   return (
-    <h2 id={id} className="col-span-12 mb-(--heading-gap) font-display text-display-lg">
+    <Tag id={id} className="col-span-12 mb-(--heading-gap) font-display text-display-lg">
       {children}
-    </h2>
+    </Tag>
   );
 }

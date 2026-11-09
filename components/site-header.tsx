@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { useMountEffect } from "@/hooks/useMountEffect";
-import { inquiryHref, navHref, navigation, site, type NavItem } from "@/lib/site";
+import { inquiryPath, isCurrent, navigation, site, type NavItem } from "@/lib/site";
 
 function isOverCover(headerHeight: number) {
   const cover = document.querySelector("[data-cover]");
@@ -32,12 +32,16 @@ function lockPageScroll(locked: boolean) {
   document.documentElement.style.overflow = locked ? "hidden" : "";
 }
 
-function NavLinks({ items, onHome }: { items: NavItem[]; onHome: boolean }) {
+function NavLinks({ items, pathname }: { items: NavItem[]; pathname: string }) {
   return (
     <ul className="flex gap-9 text-small">
       {items.map((item) => (
         <li key={item.label}>
-          <Link href={navHref(item, onHome)} className="link-underline">
+          <Link
+            href={item.href}
+            aria-current={isCurrent(item, pathname) ? "page" : undefined}
+            className="link-underline"
+          >
             {item.label}
           </Link>
         </li>
@@ -47,7 +51,12 @@ function NavLinks({ items, onHome }: { items: NavItem[]; onHome: boolean }) {
 }
 
 export function SiteHeader() {
-  const onHome = usePathname() === "/";
+  const pathname = usePathname();
+  return <HeaderBar key={pathname} pathname={pathname} />;
+}
+
+function HeaderBar({ pathname }: { pathname: string }) {
+  const onHome = pathname === "/";
   const [menuOpen, setMenuOpen] = useState(false);
   const onCover = useOverCover(onHome) && !menuOpen;
 
@@ -88,7 +97,7 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Main" className="hidden md:block">
-          <NavLinks items={navigation} onHome={onHome} />
+          <NavLinks items={navigation} pathname={pathname} />
         </nav>
 
         <button
@@ -122,16 +131,21 @@ export function SiteHeader() {
           <ul className="flex flex-col">
             {navigation.map((item) => (
               <li key={item.label}>
-                <Link href={navHref(item, onHome)} onClick={closeMenu} className="block py-3">
+                <Link
+                  href={item.href}
+                  onClick={closeMenu}
+                  aria-current={isCurrent(item, pathname) ? "page" : undefined}
+                  className="block py-3"
+                >
                   {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <a href={inquiryHref} onClick={closeMenu} className="button-ink mt-4">
+        <Link href={inquiryPath} onClick={closeMenu} className="button-ink mt-4">
           Check your date
-        </a>
+        </Link>
       </div>
     </header>
   );
