@@ -10,6 +10,8 @@ export type Photo = {
   position: string;
 };
 
+export type CoverPhoto = Photo & { top: "bright" | "dark" };
+
 export type Video = { kind: "video"; src: string; alt: string };
 
 export type Media = Photo | Video;
@@ -54,7 +56,7 @@ type Cms = {
     description: string;
     shareImage: Photo | null;
   };
-  home: { heroImage: Photo; heroTitle: string; featured: Story[] };
+  home: { heroImage: CoverPhoto; heroImageMobile: CoverPhoto | null; heroTitle: string; featured: Story[] };
   stories: Story[];
   packages: Package[];
   packagesPage: {

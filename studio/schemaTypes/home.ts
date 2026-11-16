@@ -9,6 +9,12 @@ export const home = defineType({
   fields: [
     defineField({ name: "heroImage", title: "Cover photo", type: "photo", validation: (rule) => rule.required() }),
     defineField({
+      name: "heroImageMobile",
+      title: "Cover photo on mobile",
+      type: "photo",
+      description: "Optional. Shown on phones and on tablets held upright. Leave empty to use the cover photo everywhere.",
+    }),
+    defineField({
       name: "heroTitle",
       title: "Cover heading",
       type: "text",

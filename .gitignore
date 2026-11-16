@@ -18,3 +18,4 @@ npm-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 *.md
+/transfer-*/

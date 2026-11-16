@@ -9,6 +9,7 @@ const projectId = process.env.SANITY_PROJECT_ID ?? "1a8x4j3x";
 const dataset = process.env.SANITY_DATASET ?? "production";
 const maxPhotoWidth = 2800;
 const maxBundledVideoBytes = 24 * 1024 * 1024;
+const brightTopThreshold = 0.6;
 
 const root = path.resolve(import.meta.dirname, "..");
 const photoDir = path.join(root, "public/photos");
@@ -31,7 +32,7 @@ const storyFields = `"id": slug.current, "partners": [partnerOne, partnerTwo], c
 
 const query = `{
   "settings": *[_id == "settings"][0]{title, wordmark, photographer, city, email, instagram, description, shareImage{${photoFields}}},
-  "home": *[_id == "home"][0]{heroImage{${photoFields}}, heroTitle, "featured": featuredStories[]->{${storyFields}}},
+  "home": *[_id == "home"][0]{heroImage{${photoFields}}, heroImageMobile{${photoFields}}, heroTitle, "featured": featuredStories[]->{${storyFields}}},
   "stories": *[_type == "story" && defined(slug.current)] | order(orderRank){${storyFields}},
   "packages": *[_type == "package"] | order(orderRank){name, price, photoCount, duration, description, photo{${photoFields}}},
   "packagesPage": *[_id == "packagesPage"][0]{additionalHourPrice, included, steps[]{title, text}, questions[]{question, answer}},
@@ -88,10 +89,24 @@ async function localPhoto(photo) {
   const variant = hasCrop(photo.crop) ? `-${shortHash(JSON.stringify(photo.crop))}` : "";
   const name = `${photo.asset._id.replace(/^image-/, "").split("-")[0]}${variant}.jpg`;
   const file = path.join(photoDir, name);
-  const url = imageUrl.image(photo).maxWidth(maxPhotoWidth).fit("max").format("jpg").quality(90).url();
+  const url = imageUrl.image(photo).width(maxPhotoWidth).fit("max").format("jpg").quality(90).url();
   await download(url, file);
   const { width, height } = await sharp(file).metadata();
   return { kind: "photo", src: `/photos/${name}`, width, height, alt: photo.alt ?? "", position: objectPosition(photo) };
+}
+
+async function topBrightness(photo) {
+  const file = path.join(photoDir, path.basename(photo.src));
+  const band = Math.round(photo.height * 0.12);
+  const { channels } = await sharp(file).extract({ left: 0, top: 0, width: photo.width, height: band }).stats();
+  const [r, g, b] = channels.map((channel) => channel.mean / 255);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+async function coverPhoto(photo) {
+  const local = await localPhoto(photo);
+  if (!local) return null;
+  return { ...local, top: (await topBrightness(local)) > brightTopThreshold ? "bright" : "dark" };
 }
 
 async function localVideo(video) {
@@ -152,7 +167,8 @@ async function main() {
   const content = {
     settings: { ...settings, shareImage: await localPhoto(settings.shareImage) },
     home: {
-      heroImage: await localPhoto(home.heroImage),
+      heroImage: await coverPhoto(home.heroImage),
+      heroImageMobile: await coverPhoto(home.heroImageMobile),
       heroTitle: home.heroTitle,
       featured: await Promise.all((home.featured ?? []).filter(Boolean).map(localStory)),
     },
