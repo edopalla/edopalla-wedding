@@ -9,7 +9,6 @@ const projectId = process.env.SANITY_PROJECT_ID ?? "1a8x4j3x";
 const dataset = process.env.SANITY_DATASET ?? "production";
 const maxPhotoWidth = 2800;
 const maxBundledVideoBytes = 24 * 1024 * 1024;
-const brightTopThreshold = 0.6;
 
 const root = path.resolve(import.meta.dirname, "..");
 const photoDir = path.join(root, "public/photos");
@@ -95,20 +94,6 @@ async function localPhoto(photo) {
   return { kind: "photo", src: `/photos/${name}`, width, height, alt: photo.alt ?? "", position: objectPosition(photo) };
 }
 
-async function topBrightness(photo) {
-  const file = path.join(photoDir, path.basename(photo.src));
-  const band = Math.round(photo.height * 0.12);
-  const { channels } = await sharp(file).extract({ left: 0, top: 0, width: photo.width, height: band }).stats();
-  const [r, g, b] = channels.map((channel) => channel.mean / 255);
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-
-async function coverPhoto(photo) {
-  const local = await localPhoto(photo);
-  if (!local) return null;
-  return { ...local, top: (await topBrightness(local)) > brightTopThreshold ? "bright" : "dark" };
-}
-
 async function localVideo(video) {
   if (!video?.asset) return null;
   if (video.asset.size > maxBundledVideoBytes) return { kind: "video", src: video.asset.url, alt: video.alt ?? "" };
@@ -167,8 +152,8 @@ async function main() {
   const content = {
     settings: { ...settings, shareImage: await localPhoto(settings.shareImage) },
     home: {
-      heroImage: await coverPhoto(home.heroImage),
-      heroImageMobile: await coverPhoto(home.heroImageMobile),
+      heroImage: await localPhoto(home.heroImage),
+      heroImageMobile: await localPhoto(home.heroImageMobile),
       heroTitle: home.heroTitle,
       featured: await Promise.all((home.featured ?? []).filter(Boolean).map(localStory)),
     },

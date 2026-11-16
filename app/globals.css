@@ -111,7 +111,9 @@ html:has(dialog[open]) {
 }
 
 .cover-scrim {
-  background-image: linear-gradient(to top, rgb(28 27 25 / 0.6), rgb(28 27 25 / 0.36) 30%, transparent 62%);
+  background-image:
+    linear-gradient(to bottom, rgb(28 27 25 / 0.65), rgb(28 27 25 / 0.45) 4.5rem, transparent 12rem),
+    linear-gradient(to top, rgb(28 27 25 / 0.6), rgb(28 27 25 / 0.36) 30%, transparent 62%);
 }
 
 [data-cover] .cover-words,
@@ -119,16 +121,3 @@ html:has(dialog[open]) {
   text-shadow: 0 0 0.6em rgb(28 27 25 / 0.45);
 }
 
-@media (orientation: landscape) {
-  body:has([data-top-landscape="bright"]) .site-header[data-on-cover="true"] {
-    color: var(--color-ink);
-    text-shadow: none;
-  }
-}
-
-@media (orientation: portrait) {
-  body:has([data-top-portrait="bright"]) .site-header[data-on-cover="true"] {
-    color: var(--color-ink);
-    text-shadow: none;
-  }
-}

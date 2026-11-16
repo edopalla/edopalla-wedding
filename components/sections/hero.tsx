@@ -42,12 +42,7 @@ export function Hero() {
   const lines = home.heroTitle.split("\n");
 
   return (
-    <section
-      data-cover
-      data-top-landscape={home.heroImage.top}
-      data-top-portrait={(home.heroImageMobile ?? home.heroImage).top}
-      className="relative h-svh min-h-[32rem] overflow-hidden text-paper"
-    >
+    <section data-cover className="relative h-svh min-h-[32rem] overflow-hidden text-paper">
       {home.heroImageMobile ? (
         <ArtDirectedCover landscape={home.heroImage} portrait={home.heroImageMobile} />
       ) : (
