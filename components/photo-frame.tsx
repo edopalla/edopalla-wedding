@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { Photo } from "@/content/photos";
+import type { Photo } from "@/content/cms";
 
 const shapes = {
   landscape: "aspect-3/2",
@@ -11,12 +11,21 @@ type PhotoFrameProps = {
   shape: keyof typeof shapes;
   sizes: string;
   className?: string;
+  preload?: boolean;
 };
 
-export function PhotoFrame({ photo, shape, sizes, className = "" }: PhotoFrameProps) {
+export function PhotoFrame({ photo, shape, sizes, className = "", preload }: PhotoFrameProps) {
   return (
     <div className={`relative overflow-hidden ${shapes[shape]} ${className}`}>
-      <Image src={photo.image} alt={photo.alt} fill sizes={sizes} className="object-cover" />
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        fill
+        sizes={sizes}
+        preload={preload}
+        style={{ objectPosition: photo.position }}
+        className="object-cover"
+      />
     </div>
   );
 }

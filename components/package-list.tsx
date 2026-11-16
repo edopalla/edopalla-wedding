@@ -15,17 +15,19 @@ export function PackageList() {
             />
             <div className="flex items-baseline justify-between gap-4">
               <h3 className="font-display text-display-sm">{item.name}</h3>
-              <p>{formatDkk(item.priceDkk)}</p>
+              <p>{formatDkk(item.price)}</p>
             </div>
-            <p>
-              {item.photos}, {item.hours}
-            </p>
+            {(item.photoCount || item.duration) && (
+              <p>{[item.photoCount, item.duration].filter(Boolean).join(", ")}</p>
+            )}
             <p className="text-pretty">{item.description}</p>
           </li>
         ))}
       </ul>
 
-      <p className="col-span-12 mt-10">Additional hours {formatDkk(additionalHourDkk)}</p>
+      {additionalHourDkk !== null && (
+        <p className="col-span-12 mt-10">Additional hours {formatDkk(additionalHourDkk)}</p>
+      )}
     </>
   );
 }

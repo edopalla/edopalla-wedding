@@ -1,0 +1,25 @@
+{
+  "name": "eterna-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/icons": "^5.3.0",
+    "@sanity/orderable-document-list": "^2.0.29",
+    "@sanity/ui": "^4.4.12",
+    "@sanity/vision": "^6.23.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.23.0",
+    "sanity-plugin-media": "^6.6.3",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5"
+  }
+}

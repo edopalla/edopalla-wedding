@@ -1,4 +1,4 @@
-import { mkdir, readdir, readFile, stat } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -40,8 +40,16 @@ async function writeVariants(file) {
   return written;
 }
 
+async function removeOrphans(photos) {
+  const names = new Set(photos.map((file) => path.parse(file).name));
+  const variants = await readdir(outputDir);
+  const orphans = variants.filter((file) => !names.has(file.replace(/-\d+\.webp$/, "")));
+  await Promise.all(orphans.map((file) => rm(path.join(outputDir, file))));
+}
+
 await mkdir(outputDir, { recursive: true });
 const photos = (await readdir(sourceDir)).filter((file) => /\.(jpe?g|png)$/i.test(file));
+await removeOrphans(photos);
 const counts = await Promise.all(photos.map(writeVariants));
 const total = counts.reduce((sum, count) => sum + count, 0);
 

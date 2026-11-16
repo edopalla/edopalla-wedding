@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Page } from "@/components/page";
 import { PhotoFrame } from "@/components/photo-frame";
-import { PhotoRow } from "@/components/photo-row";
-import { findPost, nextPost, postHref, posts, type Block } from "@/content/posts";
+import { PostText } from "@/components/rich-text";
+import { findPost, nextPost, postHref, posts } from "@/content/posts";
 
 export const dynamicParams = false;
 
@@ -23,26 +23,8 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
   return {
     title: post.title,
     description: post.excerpt,
-    openGraph: { images: [post.cover.image.src], type: "article" },
+    openGraph: { images: [post.cover.src], type: "article", publishedTime: post.publishedAt },
   };
-}
-
-function PostBlock({ block }: { block: Block }) {
-  if (block.type === "heading") {
-    return (
-      <h2 className="col-span-12 mt-8 font-display text-display-lg md:col-span-7 md:col-start-4">
-        {block.text}
-      </h2>
-    );
-  }
-  if (block.type === "photos") {
-    return (
-      <div className="col-span-12 my-8">
-        <PhotoRow photos={block.photos} />
-      </div>
-    );
-  }
-  return <p className="col-span-12 max-w-[60ch] text-pretty md:col-span-7 md:col-start-4">{block.text}</p>;
 }
 
 export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
@@ -57,11 +39,7 @@ export default async function PostPage({ params }: PageProps<"/blog/[slug]">) {
         sizes="100vw"
         className="col-span-12 mb-(--heading-gap)"
       />
-      <div className="col-span-12 grid grid-cols-subgrid gap-y-5">
-        {post.blocks.map((block, index) => (
-          <PostBlock key={index} block={block} />
-        ))}
-      </div>
+      <PostText value={post.body} />
       <nav
         aria-label="Posts"
         className="col-span-12 mt-(--section) flex justify-between gap-6 font-display text-display-sm"

@@ -15,19 +15,17 @@ const text = Schibsted_Grotesk({
   subsets: ["latin"],
 });
 
-const description = `${site.photographer} photographs elopements and weddings in ${site.city}, from intimate City Hall ceremonies to the full day. See the work and packages, and check your date.`;
-
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: `${site.city} elopement and wedding photographer | ${site.name}`,
     template: `%s | ${site.name}`,
   },
-  description,
+  description: site.description,
   openGraph: {
     title: site.name,
-    description,
-    images: ["/photos/kieran-helle-sunflowers.jpg"],
+    description: site.description,
+    images: site.shareImage ? [site.shareImage.src] : undefined,
     type: "website",
   },
 };

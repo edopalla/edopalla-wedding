@@ -3,21 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "content": "node scripts/fetch-content.mjs",
     "images": "node scripts/generate-image-variants.mjs",
-    "predev": "npm run images",
+    "predev": "npm run content && npm run images",
     "dev": "next dev",
-    "prebuild": "npm run images",
+    "prebuild": "npm run content && npm run images",
     "build": "next build",
     "preview": "npx wrangler dev",
     "deploy": "npx wrangler deploy",
-    "lint": "eslint"
+    "lint": "eslint",
+    "studio": "npm --prefix studio run dev",
+    "studio:deploy": "npm --prefix studio run deploy"
   },
   "dependencies": {
+    "@portabletext/react": "^8.0.1",
     "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@sanity/client": "^8.16.0",
+    "@sanity/image-url": "^2.2.0",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

@@ -1,13 +1,14 @@
 import Link from "next/link";
-import { photos } from "@/content/photos";
+import { about } from "@/content/pages";
 import { site } from "@/lib/site";
 import { PhotoFrame } from "../photo-frame";
+import { Paragraphs } from "../rich-text";
 
 export function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="page-grid items-center gap-y-(--heading-gap) py-(--section)">
       <PhotoFrame
-        photo={photos.robertElenaForeheads}
+        photo={about.photo}
         shape="portrait"
         sizes="(min-width: 768px) 50vw, 100vw"
         className="col-span-12 md:col-span-6"
@@ -17,20 +18,8 @@ export function About() {
         <h2 id="about-title" className="font-display text-display-sm">
           {site.photographer}
         </h2>
-        <p className="font-display text-display-lg text-balance">
-          I photograph elopements and weddings the way they happen, quietly and close.
-        </p>
-        <div className="flex max-w-[44ch] flex-col gap-4 text-pretty">
-          <p>
-            I&rsquo;m Edoardo, the photographer behind Eterna, based in Copenhagen. I follow your
-            day as it unfolds rather than directing it, at an intimate City Hall ceremony, on an
-            afternoon walk through the city, or through every hour of a full wedding.
-          </p>
-          <p>
-            Whether it&rsquo;s the two of you and two witnesses or everyone you love, you get the
-            same attention and the same care.
-          </p>
-        </div>
+        <p className="font-display text-display-lg text-balance">{about.statement}</p>
+        <Paragraphs value={about.intro} className="max-w-[44ch]" />
         <Link href="/about" className="link-underline self-start font-display text-display-sm">
           More about me
         </Link>

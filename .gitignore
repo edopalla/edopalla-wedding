@@ -5,7 +5,12 @@
 /build
 /.wrangler
 /.impeccable
-/public/photos/variants/
+/public/photos/
+/public/videos/
+/content/cms.json
+/studio/node_modules
+/studio/dist
+/studio/.sanity
 .DS_Store
 *.pem
 npm-debug.log*

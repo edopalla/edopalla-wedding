@@ -1,14 +1,17 @@
+import { cms } from "@/content/cms";
+
+const { settings } = cms;
+
 export const site = {
-  name: "Eterna Photography",
+  name: settings.title,
   url: "https://eternaphotography.com",
-  wordmark: "Eterna",
-  photographer: "Edoardo Pallaoro",
-  city: "Copenhagen",
-  email: "pallaoro.edoardo@gmail.com",
-  instagram: {
-    handle: "eterna_photography_cph",
-    url: "https://www.instagram.com/eterna_photography_cph",
-  },
+  wordmark: settings.wordmark,
+  photographer: settings.photographer,
+  city: settings.city,
+  email: settings.email,
+  instagram: settings.instagram,
+  description: settings.description,
+  shareImage: settings.shareImage,
 };
 
 const inquiryBody = ["Date:", "Place:", "About us:"].join("\n\n");

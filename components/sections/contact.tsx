@@ -51,9 +51,11 @@ export function Contact({ invite = true }: { invite?: boolean }) {
           </ul>
         </nav>
         <div className="col-span-12 flex gap-8 md:col-span-4 md:justify-end">
-          <a href={site.instagram.url} className="link-underline" rel="noopener" target="_blank">
-            Instagram
-          </a>
+          {site.instagram && (
+            <a href={site.instagram} className="link-underline" rel="noopener" target="_blank">
+              Instagram
+            </a>
+          )}
           <p>
             {site.name}, {site.city}
           </p>

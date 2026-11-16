@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps<"/portfolio/[slug]"
   return {
     title: coupleName(story),
     description: `${coupleName(story)}, photographed by ${site.photographer}.`,
-    openGraph: { images: [story.cover.image.src] },
+    openGraph: { images: [story.cover.src] },
   };
 }
 
@@ -34,7 +34,7 @@ export default async function ProjectPage({ params }: PageProps<"/portfolio/[slu
   return (
     <Page title={coupleName(story)}>
       <div className="col-span-12">
-        <PhotoGallery photos={story.photos} />
+        <PhotoGallery items={story.media} />
       </div>
       <nav
         aria-label="Couples"
