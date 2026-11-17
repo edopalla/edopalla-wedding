@@ -34,7 +34,7 @@ const query = `{
   "home": *[_id == "home"][0]{heroImage{${photoFields}}, heroImageMobile{${photoFields}}, heroTitle, "featured": featuredStories[]->{${storyFields}}},
   "stories": *[_type == "story" && defined(slug.current)] | order(orderRank){${storyFields}},
   "packages": *[_type == "package"] | order(orderRank){name, price, photoCount, duration, description, photo{${photoFields}}},
-  "packagesPage": *[_id == "packagesPage"][0]{additionalHourPrice, included, steps[]{title, text}, questions[]{question, answer}},
+  "packagesPage": *[_id == "packagesPage"][0]{additionalHourPrice, included, steps[]{title, text}, questions[]{question, answer}, bookingPhoto{${photoFields}}, questionsPhoto{${photoFields}}},
   "posts": *[_type == "post" && defined(slug.current)] | order(publishedAt desc){
     title, "slug": slug.current, publishedAt, excerpt, cover{${photoFields}},
     body[]{..., _type == "gallery" => {"items": items[]{${mediaFields}}}}
@@ -164,6 +164,8 @@ async function main() {
       included: packagesPage.included ?? [],
       steps: packagesPage.steps ?? [],
       questions: packagesPage.questions ?? [],
+      bookingPhoto: await localPhoto(packagesPage.bookingPhoto),
+      questionsPhoto: await localPhoto(packagesPage.questionsPhoto),
     },
     posts: await Promise.all(
       data.posts.map(async (post) => ({ ...post, cover: await localPhoto(post.cover), body: await localBody(post.body) })),

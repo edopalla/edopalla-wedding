@@ -37,6 +37,12 @@ export const packagesPage = defineType({
       ],
     }),
     defineField({
+      name: "bookingPhoto",
+      title: "How booking works photo",
+      type: "photo",
+      description: "Shown beside the booking steps.",
+    }),
+    defineField({
       name: "questions",
       type: "array",
       of: [
@@ -50,6 +56,12 @@ export const packagesPage = defineType({
           preview: { select: { title: "question", subtitle: "answer" } },
         }),
       ],
+    }),
+    defineField({
+      name: "questionsPhoto",
+      title: "Questions photo",
+      type: "photo",
+      description: "Shown beside the questions.",
     }),
   ],
   preview: { prepare: () => ({ title: "Packages page" }) },

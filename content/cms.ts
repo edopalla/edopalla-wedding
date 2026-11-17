@@ -62,6 +62,8 @@ type Cms = {
     included: string[];
     steps: { title: string; text: string }[];
     questions: { question: string; answer: string }[];
+    bookingPhoto: Photo | null;
+    questionsPhoto: Photo | null;
   };
   posts: Post[];
   about: {

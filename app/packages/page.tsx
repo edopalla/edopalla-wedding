@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PackageList } from "@/components/package-list";
 import { Page } from "@/components/page";
 import { TextSection } from "@/components/text-section";
-import { bookingSteps, includedInEveryPackage, questions } from "@/content/packages";
+import { bookingPhoto, bookingSteps, includedInEveryPackage, questions, questionsPhoto } from "@/content/packages";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export default function PackagesPage() {
         </ul>
       </TextSection>
 
-      <TextSection id="booking" title="How booking works">
+      <TextSection id="booking" title="How booking works" photo={bookingPhoto}>
         <ol className="flex flex-col gap-8">
           {bookingSteps.map((step) => (
             <li key={step.title} className="flex flex-col gap-2">
@@ -34,7 +34,7 @@ export default function PackagesPage() {
         </ol>
       </TextSection>
 
-      <TextSection id="questions" title="Questions">
+      <TextSection id="questions" title="Questions" photo={questionsPhoto}>
         <dl className="flex flex-col gap-8">
           {questions.map((item) => (
             <div key={item.question} className="flex flex-col gap-2">
